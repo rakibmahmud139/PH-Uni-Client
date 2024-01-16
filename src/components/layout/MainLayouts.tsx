@@ -1,35 +1,33 @@
-import { Layout, Menu, MenuProps } from "antd";
+import { Layout, Menu } from "antd";
+import { Outlet } from "react-router-dom";
+import { adminSidebarItems } from "../../routers/admin.routes";
 
 const { Header, Content, Footer, Sider } = Layout;
 
-const items: MenuProps["items"] = [
-  {
-    key: 1,
-    label: "Dashboard",
-  },
-  {
-    key: 2,
-    label: "Profile",
-  },
-  {
-    key: 3,
-    label: "User management",
-    children: [
-      {
-        key: 31,
-        label: "Create user",
-      },
-      {
-        key: 32,
-        label: "Create faculty",
-      },
-      {
-        key: 33,
-        label: "Create user",
-      },
-    ],
-  },
-];
+// const items: MenuProps["items"] = [
+//   {
+//     key: "Dashboard",
+//     label: <NavLink to={"/admin/dashboard"}>Dashboard</NavLink>,
+//   },
+//   {
+//     key: "User Management",
+//     label: "User management",
+//     children: [
+//       {
+//         key: "Create Admin",
+//         label: <NavLink to={"/admin/create-admin"}>Create Admin</NavLink>,
+//       },
+//       {
+//         key: "Create Faculty",
+//         label: <NavLink to={"/admin/create-faculty"}>Create Faculty</NavLink>,
+//       },
+//       {
+//         key: "Create Student",
+//         label: <NavLink to={"/admin/create-student"}>Create Student</NavLink>,
+//       },
+//     ],
+//   },
+// ];
 
 const MainLayouts = () => {
   return (
@@ -59,7 +57,7 @@ const MainLayouts = () => {
           theme="dark"
           mode="inline"
           defaultSelectedKeys={["4"]}
-          items={items}
+          items={adminSidebarItems}
         />
       </Sider>
       <Layout>
@@ -71,7 +69,7 @@ const MainLayouts = () => {
               minHeight: 360,
             }}
           >
-            <h1>Main content should go from here</h1>
+            <Outlet />
           </div>
         </Content>
         <Footer style={{ textAlign: "center" }}>
