@@ -9,19 +9,22 @@ import {
 import { useState } from "react";
 import { useGetAllStudentsQuery } from "../../../redux/features/admin/userManagement.api";
 import { TQueryParam, TStudent } from "../../../types";
+import { Link } from "react-router-dom";
 
-export type TTableData = Pick<TStudent, "fulName" | "id">;
+export type TTableData = Pick<
+  TStudent,
+  "fulName" | "id" | "email" | "contactNo"
+>;
 
 const StudentData = () => {
   const [query, setQuery] = useState<TQueryParam[]>([]);
-  const [page, setPage] = useState(2);
+  const [page, setPage] = useState(1);
 
   const {
     data: studentData,
     isFetching,
     isLoading,
   } = useGetAllStudentsQuery([
-    { name: "limit", value: 2 },
     { name: "page", value: page },
     { name: "sort", value: "id" },
     ...query,
@@ -29,31 +32,48 @@ const StudentData = () => {
 
   const metaData = studentData?.meta;
 
-  const tableData = studentData?.data?.map(({ _id, fulName, id }) => ({
-    key: _id,
-    fulName,
-    id,
-  }));
+  const tableData = studentData?.data?.map(
+    ({ _id, fulName, id, email, contactNo }) => ({
+      key: _id,
+      fulName,
+      id,
+      email,
+      contactNo,
+    })
+  );
 
   const columns: TableColumnsType<TTableData> = [
     {
       title: "Name",
       dataIndex: "fulName",
     },
-
     {
       title: "Roll No.",
       dataIndex: "id",
     },
     {
+      title: "Email",
+      dataIndex: "email",
+    },
+    {
+      title: "Contact No.",
+      dataIndex: "contactNo",
+    },
+    {
       title: "Action",
       key: "x",
-      render: () => {
+      render: (item) => {
         return (
           <Space>
-            <Button>Details</Button>
-            <Button>Update</Button>
-            <Button>Block</Button>
+            <Link to={`/admin/student-data/${item?.key}`}>
+              <Button>Details</Button>
+            </Link>
+            <Link to={`/admin/student-update/${item?.key}`}>
+              <Button>Update</Button>
+            </Link>
+            <Link to={`/admin/student-data/${item?.key}`}>
+              <Button>Block</Button>
+            </Link>
           </Space>
         );
       },
