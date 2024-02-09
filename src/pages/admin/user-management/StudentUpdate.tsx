@@ -1,4 +1,4 @@
-import { Button, Col, Divider, Form, Input, Row } from "antd";
+import { Button, Col, Divider, Form, Input, Row, Spin } from "antd";
 import { useParams } from "react-router-dom";
 import PHForm from "../../../components/form/PHForm";
 import PHInput from "../../../components/form/PHInput";
@@ -17,7 +17,8 @@ import { useGetSingleStudentQuery } from "../../../redux/features/admin/userMana
 
 const StudentUpdate = () => {
   const { studentId } = useParams();
-  const { data: studentDefaultData } = useGetSingleStudentQuery(studentId);
+  const { data: studentDefaultData, isFetching } =
+    useGetSingleStudentQuery(studentId);
 
   //*academic semester
   const { data: sData, isLoading: sIsLoading } =
@@ -40,6 +41,10 @@ const StudentUpdate = () => {
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     console.log(data);
   };
+
+  if (isFetching) {
+    return <Spin />;
+  }
 
   return (
     <Row>
