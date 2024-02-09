@@ -3,13 +3,6 @@ import { baseApi } from "../../api/baseApi";
 
 const userManagementApi = baseApi.injectEndpoints({
   endpoints: (builder) => ({
-    addStudent: builder.mutation({
-      query: (data) => ({
-        url: "/users/create-student",
-        method: "POST",
-        body: data,
-      }),
-    }),
     getAllStudents: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
@@ -33,18 +26,52 @@ const userManagementApi = baseApi.injectEndpoints({
         };
       },
     }),
+
+    addStudent: builder.mutation({
+      query: (data) => ({
+        url: "/users/create-student",
+        method: "POST",
+        body: data,
+      }),
+    }),
+
     getSingleStudent: builder.query({
       query: (studentId) => ({
         url: `/students/${studentId}`,
         method: "GET",
       }),
     }),
+
     updateStudent: builder.mutation({
-      query: (options) => ({
-        url: `/students/${options?.studentId}`,
+      query: (args) => ({
+        url: `/students/${args?.studentId}`,
         method: "PATCH",
-        body: options?.data,
+        body: args?.data,
       }),
+    }),
+
+    getAllFaculties: builder.query({
+      query: (args) => {
+        const params = new URLSearchParams();
+
+        if (args) {
+          args.forEach((item: TQueryParam) => {
+            params.append(item.name, item.value as string);
+          });
+        }
+
+        return {
+          url: "/faculties",
+          method: "GET",
+          params: params,
+        };
+      },
+      transformResponse: (response: TResponseRedux<any>) => {
+        return {
+          data: response.data,
+          meta: response.meta,
+        };
+      },
     }),
   }),
 });
@@ -53,4 +80,6 @@ export const {
   useAddStudentMutation,
   useGetAllStudentsQuery,
   useGetSingleStudentQuery,
+  useUpdateStudentMutation,
+  useGetAllFacultiesQuery,
 } = userManagementApi;

@@ -24,7 +24,7 @@ export type TStudent = {
   academicDepartment: TAcademicDepartment;
   academicFaculty: TAcademicFaculty;
   isDeleted: boolean;
-  fulName: string;
+  fullName: string;
 };
 
 export type TName = {

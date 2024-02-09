@@ -13,7 +13,7 @@ import { Link } from "react-router-dom";
 
 export type TTableData = Pick<
   TStudent,
-  "fulName" | "id" | "email" | "contactNo"
+  "fullName" | "id" | "email" | "contactNo"
 >;
 
 const StudentData = () => {
@@ -33,9 +33,9 @@ const StudentData = () => {
   const metaData = studentData?.meta;
 
   const tableData = studentData?.data?.map(
-    ({ _id, fulName, id, email, contactNo }) => ({
+    ({ _id, fullName, id, email, contactNo }) => ({
       key: _id,
-      fulName,
+      fullName,
       id,
       email,
       contactNo,

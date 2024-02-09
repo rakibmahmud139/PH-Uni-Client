@@ -1,7 +1,12 @@
 import { Button, Dropdown, Table, TableColumnsType, Tag } from "antd";
-import { useGetAllRegisteredSemestersQuery } from "../../../redux/features/admin/courseManagement.api";
+import {
+  useGetAllRegisteredSemestersQuery,
+  useUpdateRegisteredSemesterMutation,
+} from "../../../redux/features/admin/courseManagement.api";
 import { TSemester } from "../../../types";
 import moment from "moment";
+import { useState } from "react";
+import { FieldValues, SubmitHandler } from "react-hook-form";
 
 const items = [
   {
@@ -22,8 +27,12 @@ export type TTableData = Pick<TSemester, "status" | "startDate" | "endDate">;
 
 const RegisteredSemester = () => {
   // const [query, setQuery] = useState<TQueryParam[]>([]);
+  const [semesterId, setSemesterId] = useState("");
+
   const { data: semesterData, isFetching } =
     useGetAllRegisteredSemestersQuery(undefined);
+
+  const [updateSemesterStatus] = useUpdateRegisteredSemesterMutation();
 
   const tableData = semesterData?.data?.map(
     ({ _id, academicSemester, status, startDate, endDate }) => ({
@@ -35,13 +44,22 @@ const RegisteredSemester = () => {
     })
   );
 
-  const handleStatusDropdown = (data) => {
-    console.log(data);
+  const handleStatusUpdate: SubmitHandler<FieldValues> = (data) => {
+    const updateData = {
+      id: semesterId,
+      data: {
+        status: data.key,
+      },
+    };
+
+    updateSemesterStatus(updateData);
+
+    console.log(updateData);
   };
 
   const menuProps = {
     items,
-    onClick: handleStatusDropdown,
+    onClick: handleStatusUpdate,
   };
 
   const columns: TableColumnsType<TTableData> = [
@@ -78,10 +96,10 @@ const RegisteredSemester = () => {
     {
       title: "Action",
       key: "x",
-      render: () => {
+      render: (item) => {
         return (
-          <Dropdown menu={menuProps}>
-            <Button>Update</Button>
+          <Dropdown menu={menuProps} trigger={["click"]}>
+            <Button onClick={() => setSemesterId(item.key)}>Update</Button>
           </Dropdown>
         );
       },
