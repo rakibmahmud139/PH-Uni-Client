@@ -26,7 +26,6 @@ const userManagementApi = baseApi.injectEndpoints({
         };
       },
     }),
-
     addStudent: builder.mutation({
       query: (data) => ({
         url: "/users/create-student",
@@ -34,14 +33,12 @@ const userManagementApi = baseApi.injectEndpoints({
         body: data,
       }),
     }),
-
     getSingleStudent: builder.query({
       query: (studentId) => ({
         url: `/students/${studentId}`,
         method: "GET",
       }),
     }),
-
     updateStudent: builder.mutation({
       query: (args) => ({
         url: `/students/${args?.studentId}`,
@@ -49,7 +46,6 @@ const userManagementApi = baseApi.injectEndpoints({
         body: args?.data,
       }),
     }),
-
     getAllFaculties: builder.query({
       query: (args) => {
         const params = new URLSearchParams();
@@ -73,6 +69,13 @@ const userManagementApi = baseApi.injectEndpoints({
         };
       },
     }),
+    changePassword: builder.mutation({
+      query: (data) => ({
+        url: "/auth/change-password",
+        method: "POST",
+        body: data,
+      }),
+    }),
   }),
 });
 
@@ -82,4 +85,5 @@ export const {
   useGetSingleStudentQuery,
   useUpdateStudentMutation,
   useGetAllFacultiesQuery,
+  useChangePasswordMutation,
 } = userManagementApi;
